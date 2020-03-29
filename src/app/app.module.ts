@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { GenericGaugeComponent } from './generic-gauge/generic-gauge.component';
 import { PanelComponent } from './panel/panel.component';
 import { AltimeterGaugeComponent } from './altimeter-gauge/altimeter-gauge.component';
+import { VsiGaugeComponent } from './vsi-gauge/vsi-gauge.component';
 
 @NgModule({
 	declarations: [
 		AppComponent,
 		GenericGaugeComponent,
 		PanelComponent,
-		AltimeterGaugeComponent
+		AltimeterGaugeComponent,
+		VsiGaugeComponent
 	],
 	imports: [
 		BrowserModule,
