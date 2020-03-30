@@ -15,7 +15,7 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 
 	constructor() {
 		super();
-		this.setPivots(368.5, 316.5);
+		this.setPivots(175, 165);
 	}
 
 	ngAfterViewInit() {
@@ -88,9 +88,9 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 		} else if  (name === 'tenthousands') {
 			el = this.ttneedle.nativeElement;
 		} else if  (name === 'qnh') {
-			x0 = -134;
-			y0 = -99;
 			el = this.qnhneedle.nativeElement;
+			x0 = 2;
+			y0 = -8;
 		}
 		let t = this.getNeedleInitialTransform(el);
 		t += ' rotate(' + value + ',' + (this.needleXpivot + x0) + ',' + (this.needleYpivot + y0) + ')';

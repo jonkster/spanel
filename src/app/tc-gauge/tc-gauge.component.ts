@@ -12,7 +12,7 @@ export class TcGaugeComponent extends GenericGaugeComponent {
 
 	constructor() {
 		super();
-		this.setPivots(210, 68);
+		this.setPivots(180,360);
 	}
 
 	ngOnInit(): void {
@@ -25,7 +25,7 @@ export class TcGaugeComponent extends GenericGaugeComponent {
 		let minangle = -40;
 		let maxangle = 40;
 		let s = 0;
-		let sdir = 1;
+		let sdir = -1;
 		let minsangle = -40;
 		let maxsangle = 40;
 		this.setValue('turn', 0);
