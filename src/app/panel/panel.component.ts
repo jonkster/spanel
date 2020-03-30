@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
 import { AltimeterGaugeComponent  } from '../altimeter-gauge/altimeter-gauge.component';
 import { VsiGaugeComponent  } from '../vsi-gauge/vsi-gauge.component';
+import { AhGaugeComponent  } from '../ah-gauge/ah-gauge.component';
 
 @Component({
   selector: 'app-panel',
