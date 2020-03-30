@@ -12,6 +12,9 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 	@ViewChild('pointer', { static: false }) pointer: ElementRef;
 	@ViewChild('caged', { static: false }) caged: ElementRef;
 
+	private pitchA: number = 0;
+	private bankA: number = 0;
+
 	constructor() {
 		super();
 		this.setPivots(210, 208);
@@ -22,23 +25,37 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 
 	ngAfterViewInit() {
 		this.checkSVG();
-		let i = 0;
+		let b = 0;
 		let dir = 1;
 		let minangle = -70;
 		let maxangle = 70;
+		let p = 0;
+		let pdir = 1;
+		let minpangle = -70;
+		let maxpangle = 70;
 		this.setValue('bank', 0);
+		this.setValue('pointer', 0);
+		this.setValue('pitch', 0);
 		if (this.activeSVG) {
 			setInterval(()=>{
-				this.setValue('bank', i);
-				this.setValue('pointer', i);
-				if ((i > 0) && (i < 30)) {
-					this.setValue('caged', i);
+				this.setValue('bank', b);
+				this.setValue('pointer', b);
+				this.bankA = b;
+				this.pitchA = p;
+				if ((b > 0) && (b < 30)) {
+					this.setValue('caged', b);
 				}
-				i += dir * 0.8; 
-				if (i > maxangle) {
+				b += dir * 0.8; 
+				if (b > maxangle) {
 					dir = -1;
-				} else if (i < minangle) {
+				} else if (b < minangle) {
 					dir = 1;
+				}
+				p += pdir * 0.5; 
+				if (p > maxpangle) {
+					pdir = -1;
+				} else if (p < minpangle) {
+					pdir = 1;
 				}
 			}, 20);
 		} else {
@@ -68,17 +85,27 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 		if (! this.activeSVG) {
 			return;
 		}
-		let el = this.ball.nativeElement;
+		let el = null;
 		if (name === 'caged') {
 			el = this.caged.nativeElement;
 			x0 = 201;
 		} else if (name === 'pointer') {
 			el = this.pointer.nativeElement;
 			x0 = 0;
+		} else if ((name === 'bank') || (name === 'pitch')) {
+			el = this.ball.nativeElement;
+			let t = this.getNeedleInitialTransform(el);
+			t += ' rotate(' + this.bankA + ',' + (this.needleXpivot + x0) + ',' + (this.needleYpivot + y0) + ')';
+			t += ' translate(0, ' + this.pitchA + ')';
+			el.setAttribute('transform', t);
+			return;
+		} else {
+			return;
 		}
 		let t = this.getNeedleInitialTransform(el);
 		t += ' rotate(' + value + ',' + (this.needleXpivot + x0) + ',' + (this.needleYpivot + y0) + ')';
 		el.setAttribute('transform', t);
+
 	}
 
 }

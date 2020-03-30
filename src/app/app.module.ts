@@ -9,6 +9,8 @@ import { PanelComponent } from './panel/panel.component';
 import { AltimeterGaugeComponent } from './altimeter-gauge/altimeter-gauge.component';
 import { VsiGaugeComponent } from './vsi-gauge/vsi-gauge.component';
 import { AhGaugeComponent } from './ah-gauge/ah-gauge.component';
+import { DiGaugeComponent } from './di-gauge/di-gauge.component';
+import { TcGaugeComponent } from './tc-gauge/tc-gauge.component';
 
 @NgModule({
 	declarations: [
@@ -17,7 +19,9 @@ import { AhGaugeComponent } from './ah-gauge/ah-gauge.component';
 		PanelComponent,
 		AltimeterGaugeComponent,
 		VsiGaugeComponent,
-		AhGaugeComponent
+		AhGaugeComponent,
+		DiGaugeComponent,
+		TcGaugeComponent
 	],
 	imports: [
 		BrowserModule,

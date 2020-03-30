@@ -1,4 +1,29 @@
-.gauge-asi {
+.gauge-generic {
+	margin: 2em;
 	float: left;
-	border: 1px inset grey;
+	display: flex;
+	background-color: black;
+}
+
+.gauge-ah {
+	float: left;
+	display: flex;
+	background-color: black;
+}
+
+.gauge-tc {
+	clear: left;
+	float: left;
+	display: flex;
+	background-color: black;
+}
+
+#fascia {
+	width: 2048px;
+        height: 2048px;
+	position: absolute;
+	/*background-image: url("http://localhost:4200/assets/fascia.png");*/
+	background-repeat: no-repeat;
+	top: 120px;
+	left: -1px;
 }
