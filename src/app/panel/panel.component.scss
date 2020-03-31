@@ -1,11 +1,11 @@
-.gauge-generic, .gauge-tc {
-	padding: 1em;
+.gauge-generic {
 	background-color: black;
 }
 
-.gauge-tc {
+.gauge-newline {
 	clear: left;
 }
 
-#fascia {
-}
+.instrument-slot{ float: left; }
+.instrument{ position: fixed; }
+.mask{  position: relative;}

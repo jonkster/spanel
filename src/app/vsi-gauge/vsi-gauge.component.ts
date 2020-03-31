@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild   } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
 
 @Component({
@@ -9,6 +9,8 @@ import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component
 export class VsiGaugeComponent extends GenericGaugeComponent{
 
 	@ViewChild('needle', { static: false }) needle: ElementRef;
+
+	private mask: ElementRef;
 
 	constructor() {
 		super();

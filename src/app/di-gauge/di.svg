@@ -67,5 +67,5 @@
  #body
      clip-path="url(#clipPath960)"
      mask="none"
-     transform="matrix(1.5449623,0,0,1.5449623,-7.4143086,-10.995323)" />
+     transform="matrix(1.5449623,0,0,1.5449623,0,-10.790951)" />
 </svg>
