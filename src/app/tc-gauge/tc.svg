@@ -2461,6 +2461,7 @@ yuXLL79cjY/HWJ9l/RvXTIVatoFhtwAAAABJRU5ErkJggg==
      width="360"
      inkscape:label="body"
  #body
+
  />
   <image
      y="162.35269"
@@ -2473,6 +2474,7 @@ yuXLL79cjY/HWJ9l/RvXTIVatoFhtwAAAABJRU5ErkJggg==
      width="46.252773"
      inkscape:label="turnneedle"
  #turnneedle
+
  />
   <image
      y="74.68634"
@@ -2485,6 +2487,7 @@ yuXLL79cjY/HWJ9l/RvXTIVatoFhtwAAAABJRU5ErkJggg==
      width="48.769627"
      inkscape:label="slipneedle"
  #slipneedle
+
  />
   <image
      y="132.84396"
@@ -2499,5 +2502,6 @@ yuXLL79cjY/HWJ9l/RvXTIVatoFhtwAAAABJRU5ErkJggg==
      inkscape:transform-center-y="4.4761262"
      inkscape:label="cover"
  #cover
+
  />
 </svg>

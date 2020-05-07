@@ -1,0 +1,9 @@
+to interface with XP suggest ExtPlane plugin that will allow access tp XP
+datarefs
+
+DataRefTool plugin to see what is happening in XP
+
+sub sim/cockpit2/gauges/indicators/altitude_ft_pilot
+sub sim/cockpit/misc/barometer_setting
+set sim/cockpit/misc/barometer_setting
+

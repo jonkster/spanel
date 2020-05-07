@@ -1,5 +1,15 @@
-.instrument-base {
-	display: block;
-	overflow: auto;
-	background-color: black;
+html {
+}
+body {
+}
+.nav-links {
+	float: right;
+	border: 1px solid red;
+	padding: 1em;
+}
+
+.insect {
+	width: 76px;
+	height: 76px;
+	position: absolute;
 }

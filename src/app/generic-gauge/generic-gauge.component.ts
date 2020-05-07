@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { FlightdataService } from '../services/flightdata.service';
 
 @Component({
 	selector: 'app-generic-gauge',
@@ -12,8 +13,9 @@ export class GenericGaugeComponent implements OnInit, AfterViewInit {
 	public needleYpivot: number = 0;
 	public activeSVG: boolean = false;
 	public needleTransforms: {[el : string] : string} = {};
+	public testMode: boolean = false;
 
-	constructor() {
+	constructor(protected flightDataService: FlightdataService) {
 		this.setPivots(337, 427);
 	}
 
@@ -28,12 +30,17 @@ export class GenericGaugeComponent implements OnInit, AfterViewInit {
 		let maxangle = 620;
 		if (this.activeSVG) {
 			setInterval(()=>{
-				this.setValue('rpm', i);
-				i += dir * 1; 
-				if (i > maxangle) {
-					dir = -1;
-				} else if (i < minangle) {
-					dir = 1;
+				if (this.testMode) {
+					this.setRawValue('rpm', i);
+					i += dir * 1; 
+					if (i > maxangle) {
+						dir = -1;
+					} else if (i < minangle) {
+						dir = 1;
+					}
+				} else {
+					let ias = this.flightDataService.getNData('IAS');
+					this.setRawValue('ias', this.mapRealToRaw(ias));
 				}
 			}, 25);
 		} else {
@@ -58,6 +65,25 @@ export class GenericGaugeComponent implements OnInit, AfterViewInit {
 		return t;
 	}
 
+	mapRealToRaw(value: number) : number {
+		let a = -140.538241174766;
+		let b = 2.2657976954343;
+		let c = -0.00153616542766579;
+		if (value <= 100) {
+			a = 0.0648013405840844;
+			b = -0.045956349825489;
+			c = 0.00868194549424087;
+		}
+		else if (value <= 200) {
+			a = -68.3647496408914;
+			b = 1.34973514075744;
+			c = 0.0012895248866439;
+		}
+		let real = value;
+		real = (value*value*c) + (value * b) + a;
+		return real;
+	}
+
 	setNeedleInitialTransform(el: ElementRef) {
 		let nel = el.nativeElement;
 		let t = nel.getAttribute('transform');
@@ -71,7 +97,7 @@ export class GenericGaugeComponent implements OnInit, AfterViewInit {
 		this.needleYpivot = y;
 	}
 
-	setValue(name: string, value: number) {
+	setRawValue(name: string, value: number) {
 		if (! this.activeSVG) {
 			return;
 		}
@@ -80,5 +106,6 @@ export class GenericGaugeComponent implements OnInit, AfterViewInit {
 		t += ' rotate(' + value + ',' + this.needleXpivot + ',' + this.needleYpivot + ')';
 		el.setAttribute('transform', t);
 	}
+
 
 }

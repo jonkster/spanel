@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild   } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
+import { FlightdataService } from '../services/flightdata.service';
 
 @Component({
   selector: 'app-di-gauge',
@@ -10,8 +11,8 @@ export class DiGaugeComponent  extends GenericGaugeComponent {
 
 	@ViewChild('tape', { static: false }) tape: ElementRef;
 
-	constructor() {
-		super();
+	constructor(protected flightDataService: FlightdataService) {
+		super(flightDataService);
 		this.setPivots(210, 208);
 	}
 
@@ -26,12 +27,22 @@ export class DiGaugeComponent  extends GenericGaugeComponent {
 			let minangle = -180;
 			let maxangle = 180;
 			setInterval(()=>{
-				this.setValue('hdg', d);
-				d += dir * 0.8; 
-				if (d > maxangle) {
-					dir = -1;
-				} else if (d < minangle) {
-					dir = 1;
+				if (this.testMode) {
+					this.setRawValue('hdg', d);
+					d += dir * 0.8; 
+					if (d > maxangle) {
+						dir = -1;
+					} else if (d < minangle) {
+						dir = 1;
+					}
+				} else {
+					let h = this.flightDataService.getNData('hdg') - 270;
+
+					h += 360;
+					if (h > 330) {
+						h -= 360;
+					}
+					this.setRawValue('hdg', (-2.6 * h));
 				}
 			}, 20);
 		} else {
@@ -47,7 +58,7 @@ export class DiGaugeComponent  extends GenericGaugeComponent {
 		this.activeSVG = true;
 	}
 
-	setValue(name: string, value: number) {
+	setRawValue(name: string, value: number) {
 		let x0 = 0;
 		let y0 = 0;
 		if (! this.activeSVG) {

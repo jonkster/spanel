@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild   } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
+import { FlightdataService } from '../services/flightdata.service';
 
 @Component({
   selector: 'app-tc-gauge',
@@ -10,8 +11,8 @@ export class TcGaugeComponent extends GenericGaugeComponent {
 	@ViewChild('slipneedle', { static: false }) slipneedle: ElementRef;
 	@ViewChild('turnneedle', { static: false }) turnneedle: ElementRef;
 
-	constructor() {
-		super();
+	constructor(protected flightDataService: FlightdataService) {
+		super(flightDataService);
 		this.setPivots(180,180);
 	}
 
@@ -28,23 +29,30 @@ export class TcGaugeComponent extends GenericGaugeComponent {
 		let sdir = -1;
 		let minsangle = -40;
 		let maxsangle = 40;
-		this.setValue('turn', 0);
-		this.setValue('slip', 0);
+		this.setRawValue('turn', 0);
+		this.setRawValue('slip', 0);
 		if (this.activeSVG) {
 			setInterval(()=>{
-				this.setValue('turn', t);
-				this.setValue('slip', s);
-				t += dir * 0.7; 
-				if (t > maxangle) {
-					dir = -1;
-				} else if (t < minangle) {
-					dir = 1;
-				}
-				s += sdir * 0.3; 
-				if (s > maxsangle) {
-					sdir = -1;
-				} else if (s < minsangle) {
-					sdir = 1;
+				if (this.testMode) {
+					this.setRawValue('turn', t);
+					this.setRawValue('slip', s);
+					t += dir * 0.7; 
+					if (t > maxangle) {
+						dir = -1;
+					} else if (t < minangle) {
+						dir = 1;
+					}
+					s += sdir * 0.3; 
+					if (s > maxsangle) {
+						sdir = -1;
+					} else if (s < minsangle) {
+						sdir = 1;
+					}
+				} else {
+					let t = this.flightDataService.getNData('tr');
+					let s = this.flightDataService.getNData('slip');
+					this.setRawValue('turn', t*10);
+					this.setRawValue('slip', s*2);
 				}
 			}, 20);
 		} else {
@@ -64,7 +72,7 @@ export class TcGaugeComponent extends GenericGaugeComponent {
 		this.activeSVG = true;
 	}
 
-	setValue(name: string, value: number) {
+	setRawValue(name: string, value: number) {
 		let x0 = 0;
 		let y0 = 0;
 		if (! this.activeSVG) {

@@ -6,6 +6,22 @@
 	clear: left;
 }
 
-.instrument-slot{ float: left; }
-.instrument{ position: fixed; }
-.mask{  position: relative;}
+.instrument-slot {
+	float: left;
+	border: 1px inset gray;
+}
+.instrument {
+	position: fixed;
+}
+.mask {  
+	position: relative;
+}
+
+.panel {
+	float: left;
+	border: 1px inset black;
+	background-color: #423d3d;
+	padding: 5px;
+	margin: 0 5% 0 5%;
+	position: fixed;
+}

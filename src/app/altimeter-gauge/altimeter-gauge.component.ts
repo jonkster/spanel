@@ -1,5 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild   } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
+import { FlightdataService } from '../services/flightdata.service';
+import { XplaneDataService } from '../services/xplane-data.service';
 
 @Component({
   selector: 'app-altimeter-gauge',
@@ -13,8 +15,8 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 	@ViewChild('ttneedle', { static: false }) ttneedle: ElementRef;
 	@ViewChild('qnhneedle', { static: false }) qnhneedle: ElementRef;
 
-	constructor() {
-		super();
+	constructor(protected flightDataService: FlightdataService, private xplaneDataService: XplaneDataService ) {
+		super(flightDataService);
 		this.setPivots(175, 165);
 	}
 
@@ -28,27 +30,40 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 		let maxangle = 3600;
 		let minqnh = -90;
 		let maxqnh = 0;
-		this.setValue('hundreds', 0);
-		this.setValue('thousands', 0);
-		this.setValue('tenthousands', 0);
-		this.setValue('qnh', 0);
+		this.setRawValue('hundreds', 0);
+		this.setRawValue('thousands', 0);
+		this.setRawValue('tenthousands', 0);
+		this.setRawValue('qnh', 0);
 		if (this.activeSVG) {
 			setInterval(()=>{
-				this.setValue('hundreds', i);
-				this.setValue('thousands', i/10);
-				this.setValue('tenthousands', i/100);
-				this.setValue('qnh', q);
-				i += dir * 1; 
-				if (i > maxangle) {
-					dir = -1;
-				} else if (i < minangle) {
-					dir = 1;
-				}
-				q += qdir * 1; 
-				if (q > maxqnh) {
-					qdir = -1;
-				} else if (q < minqnh) {
-					qdir = 1;
+				if (this.testMode) {
+					this.setRawValue('hundreds', i);
+					this.setRawValue('thousands', i/10);
+					this.setRawValue('tenthousands', i/100);
+					this.setRawValue('qnh', q);
+					i += dir * 1; 
+					if (i > maxangle) {
+						dir = -1;
+					} else if (i < minangle) {
+						dir = 1;
+					}
+					q += qdir * 1; 
+					if (q > maxqnh) {
+						qdir = -1;
+					} else if (q < minqnh) {
+						qdir = 1;
+					}
+				} else {
+					let alt = this.flightDataService.getNData('alt');
+					let hundreds = this.mapRealToRaw(alt);
+
+					this.setRawValue('hundreds', hundreds);
+					this.setRawValue('thousands', hundreds/10);
+					this.setRawValue('tenthousands', hundreds/100);
+
+					let qnh = this.flightDataService.getNData('qnh');
+					let q = -(qnh - 990) * 1.2;
+					this.setRawValue('qnh', q);
 				}
 			}, 20);
 		} else {
@@ -76,7 +91,13 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 		this.activeSVG = true;
 	}
 
-	setValue(name: string, value: number) {
+	mapRealToRaw(value: number) : number {
+		let real = value;
+		real = (value / 1000) * 360;
+		return real;
+	}
+
+	setRawValue(name: string, value: number) {
 		let x0 = 0;
 		let y0 = 0;
 		if (! this.activeSVG) {
@@ -89,8 +110,8 @@ export class AltimeterGaugeComponent  extends GenericGaugeComponent {
 			el = this.ttneedle.nativeElement;
 		} else if  (name === 'qnh') {
 			el = this.qnhneedle.nativeElement;
-			x0 = 2;
-			y0 = -8;
+			x0 = 6;
+			y0 = -11;
 		}
 		let t = this.getNeedleInitialTransform(el);
 		t += ' rotate(' + value + ',' + (this.needleXpivot + x0) + ',' + (this.needleYpivot + y0) + ')';

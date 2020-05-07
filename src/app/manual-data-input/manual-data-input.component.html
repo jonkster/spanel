@@ -1,0 +1,33 @@
+<div class="manual-input">
+	<div>
+		<div>
+			<div>
+				<span>IAS {{ ias }} kts</span><span><mat-slider  min="1" max="500" step="1" [value]="ias" (input)="ias = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>Pitch {{ pitch }} &deg;</span><span><mat-slider  min="-180" max="180" step="1" [value]="pitch" (input)="pitch = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>AoB {{ aob }} &deg;</span><span><mat-slider  min="-180" max="180" step="1" [value]="aob" (input)="aob = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>QNH Setting {{ qnh }} hPa (needs work)</span><span><mat-slider  min="985" max="1030" step="1" [value]="qnh" (input)="qnh = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>Alt {{ alt }} ft</span><span><mat-slider  min="0" max="15000" step="10" [value]="alt" (input)="alt = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>Turn Rate {{ tr }}</span><span><mat-slider  min="-4" max="4" step="0.2" [value]="tr" (input)="tr = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>Slip {{ slip }}</span><span><mat-slider  min="-20" max="20" step="1" [value]="slip" (input)="slip = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>Indicated Hdg {{ hdg }} &deg;</span><span><mat-slider  min="-10" max="370" step="1" [value]="hdg" (input)="hdg = $event.value; setData()"></mat-slider> </span>
+			</div>
+			<div>
+				<span>VSI {{ vsi }} fpm</span><span><mat-slider  min="-6000" max="6000" step="20" [value]="vsi" (input)="vsi = $event.value; setData()"></mat-slider> </span>
+			</div>
+		</div>
+	</div>
+</div>

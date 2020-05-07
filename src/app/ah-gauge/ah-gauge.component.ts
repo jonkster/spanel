@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild   } from '@angular/core';
 import { GenericGaugeComponent  } from '../generic-gauge/generic-gauge.component';
+import { FlightdataService } from '../services/flightdata.service';
 
 @Component({
 	selector: 'app-ah-gauge',
@@ -15,8 +16,8 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 	private pitchA: number = 0;
 	private bankA: number = 0;
 
-	constructor() {
-		super();
+	constructor(protected flightDataService: FlightdataService) {
+		super(flightDataService);
 		this.setPivots(210, 208);
 	}
 
@@ -33,29 +34,40 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 		let pdir = 1;
 		let minpangle = -70;
 		let maxpangle = 70;
-		this.setValue('bank', 0);
-		this.setValue('pointer', 0);
-		this.setValue('pitch', 0);
+		this.setRawValue('bank', 0);
+		this.setRawValue('pointer', 0);
+		this.setRawValue('pitch', 0);
 		if (this.activeSVG) {
 			setInterval(()=>{
-				this.setValue('bank', b);
-				this.setValue('pointer', b);
-				this.bankA = b;
-				this.pitchA = p;
-				if ((b > 0) && (b < 30)) {
-					this.setValue('caged', b);
-				}
-				b += dir * 0.8; 
-				if (b > maxangle) {
-					dir = -1;
-				} else if (b < minangle) {
-					dir = 1;
-				}
-				p += pdir * 0.5; 
-				if (p > maxpangle) {
-					pdir = -1;
-				} else if (p < minpangle) {
-					pdir = 1;
+				if (this.testMode) {
+					this.setRawValue('bank', b);
+					this.setRawValue('pointer', b);
+					this.bankA = b;
+					this.pitchA = p;
+					if ((b > 0) && (b < 30)) {
+						this.setRawValue('caged', b);
+					}
+					b += dir * 0.8; 
+					if (b > maxangle) {
+						dir = -1;
+					} else if (b < minangle) {
+						dir = 1;
+					}
+					p += pdir * 0.5; 
+					if (p > maxpangle) {
+						pdir = -1;
+					} else if (p < minpangle) {
+						pdir = 1;
+					}
+				} else {
+					let b = this.flightDataService.getNData('aob');
+					this.bankA = b;
+					this.setRawValue('bank', b);
+					this.setRawValue('pointer', b);
+					let p = this.flightDataService.getNData('pitch');
+					this.setRawValue('pitch', p);
+					this.setRawValue('caged', 30);
+					this.pitchA = p;
 				}
 			}, 20);
 		} else {
@@ -79,7 +91,7 @@ export class AhGaugeComponent extends GenericGaugeComponent {
 		this.activeSVG = true;
 	}
 
-	setValue(name: string, value: number) {
+	setRawValue(name: string, value: number) {
 		let x0 = 0;
 		let y0 = 0;
 		if (! this.activeSVG) {

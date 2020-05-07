@@ -1,10 +1,22 @@
 <div class="instrument-base">
 	<router-outlet></router-outlet>
 </div>
-<a href="./panel">Panel</a>&nbsp;
-<a href="./generic-gauge">ASI</a>&nbsp;
-<a href="./ah">AH</a>&nbsp;
-<a href="/altimeter">Altimeter</a>&nbsp;
-<a href="/tc">TC</a>&nbsp;
-<a href="/di">DI</a>&nbsp;
-<a href="/vsi">VSI</a>&nbsp;
+<div class="nav-links">
+	<div>Individual Instruments:</div>
+	<div>
+		<a href="./panel">Panel</a>&nbsp;
+		<a href="./generic-gauge">ASI</a>&nbsp;
+		<a href="./ah">AH</a>&nbsp;
+		<a href="/altimeter">Altimeter</a>&nbsp;
+		<a href="/tc">TC</a>&nbsp;
+		<a href="/di">DI</a>&nbsp;
+		<a href="/vsi">VSI</a>&nbsp;
+	</div>
+	<div>
+		<app-manual-data-input>
+		</app-manual-data-input>
+	</div>
+</div>
+	<div>
+		<img #insect [@rotatedState]='state' [style.top.px]="insectX" [style.left.px]="insectY" class="insect" src= "/assets/fly.gif"/>
+	</div>
